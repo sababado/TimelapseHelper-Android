@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/margin">
+
+    <TextView
+        android:id="@+id/frames_elapsed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/frames_per_second_layout"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:gravity="center"
+        android:minWidth="70sp"
+        android:textAppearance="?android:textAppearanceLarge"
+        tools:text="748" />
+
+    <TextView
+        android:id="@+id/time_elapsed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@id/frames_elapsed"
+        android:layout_alignParentStart="true"
+        android:layout_below="@id/frames_elapsed"
+        android:layout_marginTop="@dimen/margin"
+        android:gravity="center"
+        android:textAppearance="?android:textAppearanceMedium"
+        tools:text="1:23:33" />
+
+    <LinearLayout
+        android:id="@+id/frames_per_second_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/seconds_per_frame"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?android:editTextBackground"
+            android:minWidth="40sp"
+            android:textAppearance="?android:textAppearanceLarge"
+            tools:text="50" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center"
+                android:text="@string/seconds_abbreviated"
+                android:textAppearance="?android:textAppearanceSmall" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/frame"
+                android:textAppearance="?android:textAppearanceSmall" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/start_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/time_elapsed"
+        android:layout_below="@id/frames_per_second_layout"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:textAppearance="?android:textAppearanceMedium"
+        tools:text="Start Time:1:23:33" />
+
+    <LinearLayout
+        android:layout_width="76dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/frames_per_second_layout"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:orientation="horizontal">
+
+        <ImageSwitcher
+            android:id="@+id/play_pause_switcher"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|center_vertical"
+            android:layout_marginEnd="12dp">
+
+            <ImageView
+                android:id="@+id/play"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_play" />
+
+            <ImageView
+                android:id="@+id/pause"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_pause" />
+        </ImageSwitcher>
+
+        <ImageView
+            android:id="@+id/stop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|center_vertical"
+            android:src="@drawable/ic_stop" />
+    </LinearLayout>
+
+</RelativeLayout>

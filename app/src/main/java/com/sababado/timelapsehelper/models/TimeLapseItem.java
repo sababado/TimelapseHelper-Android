@@ -1,5 +1,6 @@
 package com.sababado.timelapsehelper.models;
 
+import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.IntDef;
@@ -53,7 +54,7 @@ public class TimeLapseItem implements Parcelable {
 
     public TimeLapseItem() {
         startTime = 0L;
-        secondsPerFrame = 5;
+        secondsPerFrame = 5f;
         runState = STOPPED;
         pauseTime = 0L;
         pauseLength = 0L;
@@ -67,6 +68,16 @@ public class TimeLapseItem implements Parcelable {
         runState = in.readInt();
         pauseTime = in.readLong();
         pauseLength = in.readLong();
+    }
+
+    public TimeLapseItem(Cursor c) {
+        id = c.getLong(0);
+        startTime = c.getLong(1);
+        secondsPerFrame = c.getFloat(2);
+        //noinspection WrongConstant
+        runState = c.getInt(3);
+        pauseTime = c.getLong(4);
+        pauseLength = c.getLong(5);
     }
 
     public long getId() {
