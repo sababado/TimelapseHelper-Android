@@ -13,7 +13,7 @@ import com.sababado.timelapsehelper.models.TimeLapseItem;
  */
 public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String DB_NAME = "timelapse_helper.db";
-    public static final int VERSION = 1;
+    public static final int VERSION = 2;
 
     public DatabaseHelper(Context context) {
         super(context, DB_NAME, null, VERSION);

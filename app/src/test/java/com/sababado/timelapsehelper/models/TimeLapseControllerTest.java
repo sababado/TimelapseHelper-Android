@@ -118,7 +118,7 @@ public class TimeLapseControllerTest {
 
         TimeLapseController.stopTimeLapse(tli);
         TestingUtils.sleep(expectedRunningTime);
-        assertEquals((double)expectedRunningTime * 3.0, TimeLapseController.getRunningTime(tli), 15.0);
+        assertEquals((double)expectedRunningTime * 2.0, TimeLapseController.getRunningTime(tli), 15.0);
     }
 
     @Test

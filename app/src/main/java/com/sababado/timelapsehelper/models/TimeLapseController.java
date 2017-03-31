@@ -1,5 +1,7 @@
 package com.sababado.timelapsehelper.models;
 
+import java.text.DecimalFormat;
+
 import static com.sababado.timelapsehelper.models.TimeLapseItem.PAUSED;
 import static com.sababado.timelapsehelper.models.TimeLapseItem.RUNNING;
 import static com.sababado.timelapsehelper.models.TimeLapseItem.STOPPED;
@@ -10,6 +12,16 @@ import static com.sababado.timelapsehelper.models.TimeLapseItem.STOPPED;
  */
 
 public class TimeLapseController {
+    private static final DecimalFormat DECIMAL_FORMAT = (DecimalFormat) DecimalFormat.getIntegerInstance();
+    private static final long DAY = 24 * 60 * 60 * 1000;
+    private static final long HOUR = 60 * 60 * 1000;
+    private static final long MINUTE = 60 * 1000;
+    private static final long SECOND = 1000;
+
+    static {
+        DECIMAL_FORMAT.applyPattern("00");
+    }
+
     /**
      * Start a time-lapse. This action can be called when the time-lapse is in a paused or stopped state.
      *
@@ -27,6 +39,7 @@ public class TimeLapseController {
             timeLapseItem.setStartTime(now);
         }
         timeLapseItem.setPauseTime(0L); // The last time the TL was paused doesn't matter now.
+        timeLapseItem.setStopTime(0L); // the last time the TL was stopped doesn't matter now.
         timeLapseItem.setRunState(RUNNING);
     }
 
@@ -55,6 +68,7 @@ public class TimeLapseController {
      * @param timeLapseItem The time-lapse to stop.
      */
     public static void stopTimeLapse(TimeLapseItem timeLapseItem) {
+        timeLapseItem.setStopTime(System.currentTimeMillis());
         timeLapseItem.setRunState(STOPPED);
     }
 
@@ -65,12 +79,29 @@ public class TimeLapseController {
      * @return Runtime in milliseconds.
      */
     public static long getRunningTime(TimeLapseItem timeLapseItem) {
-        long now = System.currentTimeMillis();
+        long now = timeLapseItem.getRunState() == STOPPED ? timeLapseItem.getStopTime() : System.currentTimeMillis();
         return now - timeLapseItem.getStartTime() - timeLapseItem.calculatePauseLength();
     }
 
+    public static String getElapsedTime(TimeLapseItem timeLapseItem) {
+        long runTime = getRunningTime(timeLapseItem);
+        int days = (int) (runTime / DAY);
+        runTime = runTime % DAY;
+        int hours = (int) (runTime / HOUR);
+        runTime = runTime % HOUR;
+        int minutes = (int) (runTime / MINUTE);
+        runTime = runTime % MINUTE;
+        int seconds = (int) (runTime / SECOND);
+
+
+        return DECIMAL_FORMAT.format(days) + ":" +
+                DECIMAL_FORMAT.format(hours) + ":" +
+                DECIMAL_FORMAT.format(minutes) + ":" +
+                DECIMAL_FORMAT.format(seconds);
+    }
+
     /**
-     * Get the number of frames that has elapsegetRunningTime(timeLapseItem)d based on the start time of the time-lapse.
+     * Get the number of frames that has elapsed based on the start time of the time-lapse.
      *
      * @param timeLapseItem Time-lapse to get the frame count for.
      * @return The number of frames that should have been taken during this timelapse.

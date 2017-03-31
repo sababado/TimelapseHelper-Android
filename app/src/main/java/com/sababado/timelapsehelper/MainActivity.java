@@ -14,9 +14,12 @@ import android.view.View;
 import android.widget.ListView;
 
 import com.sababado.ezprovider.Contracts;
+import com.sababado.timelapsehelper.models.TimeLapseController;
 import com.sababado.timelapsehelper.models.TimeLapseItem;
 
-public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+public class MainActivity extends AppCompatActivity implements
+        LoaderManager.LoaderCallbacks<Cursor>,
+        TliActionListener {
 
     private TliCursorAdapter adapter;
 
@@ -38,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         });
 
         ListView listView = (ListView) findViewById(R.id.list_view);
-        adapter = new TliCursorAdapter(this, null);
+        adapter = new TliCursorAdapter(this, null, this);
         getSupportLoaderManager().initLoader(0, null, this);
         listView.setAdapter(adapter);
     }
@@ -48,6 +51,31 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         ContentValues values = new TimeLapseItem().toContentValues();
         Contracts.Contract contract = Contracts.getContract(TimeLapseItem.class);
         getContentResolver().insert(contract.CONTENT_URI, values);
+    }
+
+    private void updateTli(TimeLapseItem tli) {
+        ContentValues values = tli.toContentValues();
+        Contracts.Contract contract = Contracts.getContract(TimeLapseItem.class);
+        getContentResolver().update(contract.CONTENT_URI, values,
+                "_id=?", new String[]{String.valueOf(tli.getId())});
+    }
+
+    @Override
+    public void timeLapsePlay(TimeLapseItem tli) {
+        TimeLapseController.startTimeLapse(tli);
+        updateTli(tli);
+    }
+
+    @Override
+    public void timeLapsePause(TimeLapseItem tli) {
+        TimeLapseController.pauseTimeLapse(tli);
+        updateTli(tli);
+    }
+
+    @Override
+    public void timeLapseStop(TimeLapseItem tli) {
+        TimeLapseController.stopTimeLapse(tli);
+        updateTli(tli);
     }
 
     @Override

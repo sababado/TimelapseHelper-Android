@@ -22,14 +22,15 @@ import java.util.Date;
  */
 
 public class TliCursorAdapter extends CursorAdapter {
-    private static final SimpleDateFormat TIME_ELAPSED_FORMAT = new SimpleDateFormat("DD:HH:mm:ss");
     private static final SimpleDateFormat START_TIME_FORMAT = new SimpleDateFormat("HH:mm:ss");
 
     private LayoutInflater inflater;
+    private TliActionListener actionListener;
 
-    public TliCursorAdapter(Context context, Cursor c) {
+    public TliCursorAdapter(Context context, Cursor c, TliActionListener actionListener) {
         super(context, c, 0);
         inflater = LayoutInflater.from(context);
+        this.actionListener = actionListener;
     }
 
     @Override
@@ -57,14 +58,13 @@ public class TliCursorAdapter extends CursorAdapter {
         int framesElapsed = TimeLapseController.getFramesElapsed(tli);
         vh.framesElapsed.setText(String.valueOf(framesElapsed));
 
-        long timeElapsed = TimeLapseController.getRunningTime(tli);
-        Date time = new Date(timeElapsed);
-        vh.timeElapsed.setText(TIME_ELAPSED_FORMAT.format(time));
+        String timeElapsed = TimeLapseController.getElapsedTime(tli);
+        vh.timeElapsed.setText(timeElapsed);
 
         vh.secondsPerFrame.setText(String.valueOf(tli.getSecondsPerFrame()));
 
         if (tli.getStartTime() != 0L) {
-            time.setTime(tli.getStartTime());
+            Date time = new Date(tli.getStartTime());
             vh.startTime.setText(context.getString(R.string.start_time, START_TIME_FORMAT.format(time)));
         } else {
             vh.startTime.setText(context.getString(R.string.start_time, "--"));
@@ -84,13 +84,13 @@ public class TliCursorAdapter extends CursorAdapter {
                 if (currentId == R.id.play) {
                     // Just tapped the play button
                     // Show the pause button, show the stop button
-                    TimeLapseController.startTimeLapse(tli);
+                    actionListener.timeLapsePlay(tli);
                     vh.stop.setVisibility(View.VISIBLE);
                     vh.playPauseSwitcher.showNext();
                 } else if (currentId == R.id.pause) {
                     // just tapped the pause button
                     // Show the play button, hide the stop button
-                    TimeLapseController.pauseTimeLapse(tli);
+                    actionListener.timeLapsePause(tli);
                     vh.stop.setVisibility(View.GONE);
                     vh.playPauseSwitcher.showPrevious();
                 }
@@ -101,7 +101,7 @@ public class TliCursorAdapter extends CursorAdapter {
         vh.stop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                TimeLapseController.stopTimeLapse(tli);
+                actionListener.timeLapseStop(tli);
                 vh.stop.setVisibility(View.GONE);
                 vh.playPauseSwitcher.showPrevious();
             }

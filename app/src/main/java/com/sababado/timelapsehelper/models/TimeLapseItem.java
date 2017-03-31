@@ -53,12 +53,17 @@ public class TimeLapseItem implements Parcelable {
     @Column(5)
     private long pauseLength;
 
+    // The time at which this time-lapse was stopped.
+    @Column(6)
+    private long stopTime;
+
     public TimeLapseItem() {
         startTime = 0L;
         secondsPerFrame = 5f;
         runState = STOPPED;
         pauseTime = 0L;
         pauseLength = 0L;
+        stopTime = 0L;
     }
 
     public TimeLapseItem(Parcel in) {
@@ -69,6 +74,7 @@ public class TimeLapseItem implements Parcelable {
         runState = in.readInt();
         pauseTime = in.readLong();
         pauseLength = in.readLong();
+        stopTime = in.readLong();
     }
 
     public TimeLapseItem(Cursor c) {
@@ -79,6 +85,7 @@ public class TimeLapseItem implements Parcelable {
         runState = c.getInt(3);
         pauseTime = c.getLong(4);
         pauseLength = c.getLong(5);
+        stopTime = c.getLong(6);
     }
 
     public long getId() {
@@ -139,6 +146,14 @@ public class TimeLapseItem implements Parcelable {
         this.pauseLength = pauseLength;
     }
 
+    public long getStopTime() {
+        return stopTime;
+    }
+
+    void setStopTime(long stopTime) {
+        this.stopTime = stopTime;
+    }
+
     public static final Creator<TimeLapseItem> CREATOR = new Creator<TimeLapseItem>() {
         @Override
         public TimeLapseItem createFromParcel(Parcel parcel) {
@@ -164,6 +179,7 @@ public class TimeLapseItem implements Parcelable {
         parcel.writeInt(runState);
         parcel.writeLong(pauseTime);
         parcel.writeLong(pauseLength);
+        parcel.writeLong(stopTime);
     }
 
     public ContentValues toContentValues() {
@@ -173,6 +189,7 @@ public class TimeLapseItem implements Parcelable {
         values.put("runState", runState);
         values.put("pauseTime", pauseTime);
         values.put("pauseLength", pauseLength);
+        values.put("stopTime", stopTime);
         return values;
     }
 
@@ -188,7 +205,8 @@ public class TimeLapseItem implements Parcelable {
         if (Float.compare(that.secondsPerFrame, secondsPerFrame) != 0) return false;
         if (runState != that.runState) return false;
         if (pauseTime != that.pauseTime) return false;
-        return pauseLength == that.pauseLength;
+        if (pauseLength != that.pauseLength) return false;
+        return stopTime == that.stopTime;
 
     }
 
@@ -200,6 +218,7 @@ public class TimeLapseItem implements Parcelable {
         result = 31 * result + runState;
         result = 31 * result + (int) (pauseTime ^ (pauseTime >>> 32));
         result = 31 * result + (int) (pauseLength ^ (pauseLength >>> 32));
+        result = 31 * result + (int) (stopTime ^ (stopTime >>> 32));
         return result;
     }
 
@@ -212,6 +231,7 @@ public class TimeLapseItem implements Parcelable {
                 ", runState=" + runState +
                 ", pauseTime=" + pauseTime +
                 ", pauseLength=" + pauseLength +
+                ", stopTime=" + stopTime +
                 '}';
     }
 }
