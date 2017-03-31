@@ -9,7 +9,8 @@
         android:id="@+id/frames_elapsed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/frames_per_second_layout"
+        android:layout_alignBottom="@+id/seconds_per_frame_layout"
+        android:layout_alignEnd="@+id/time_elapsed"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:gravity="center"
@@ -21,16 +22,15 @@
         android:id="@+id/time_elapsed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@id/frames_elapsed"
         android:layout_alignParentStart="true"
         android:layout_below="@id/frames_elapsed"
         android:layout_marginTop="@dimen/margin"
         android:gravity="center"
         android:textAppearance="?android:textAppearanceMedium"
-        tools:text="1:23:33" />
+        tools:text="00:01:23:33" />
 
     <LinearLayout
-        android:id="@+id/frames_per_second_layout"
+        android:id="@+id/seconds_per_frame_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
@@ -73,8 +73,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@id/time_elapsed"
-        android:layout_below="@id/frames_per_second_layout"
-        android:layout_centerHorizontal="true"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@id/seconds_per_frame_layout"
         android:gravity="center"
         android:textAppearance="?android:textAppearanceMedium"
         tools:text="Start Time:1:23:33" />
@@ -82,12 +82,12 @@
     <LinearLayout
         android:layout_width="76dp"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/frames_per_second_layout"
+        android:layout_alignBottom="@id/seconds_per_frame_layout"
         android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
         android:orientation="horizontal">
 
-        <ImageSwitcher
+        <ViewSwitcher
             android:id="@+id/play_pause_switcher"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -105,14 +105,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_pause" />
-        </ImageSwitcher>
+        </ViewSwitcher>
 
         <ImageView
             android:id="@+id/stop"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end|center_vertical"
-            android:src="@drawable/ic_stop" />
+            android:src="@drawable/ic_stop"
+            android:visibility="gone" />
     </LinearLayout>
 
 </RelativeLayout>

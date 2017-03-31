@@ -1,5 +1,6 @@
 package com.sababado.timelapsehelper.models;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -163,6 +164,16 @@ public class TimeLapseItem implements Parcelable {
         parcel.writeInt(runState);
         parcel.writeLong(pauseTime);
         parcel.writeLong(pauseLength);
+    }
+
+    public ContentValues toContentValues() {
+        ContentValues values = new ContentValues(5);
+        values.put("startTime", startTime);
+        values.put("secondsPerFrame", secondsPerFrame);
+        values.put("runState", runState);
+        values.put("pauseTime", pauseTime);
+        values.put("pauseLength", pauseLength);
+        return values;
     }
 
     @Override
