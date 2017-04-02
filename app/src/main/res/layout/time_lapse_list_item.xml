@@ -120,6 +120,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start|center_vertical"
+            android:contentDescription="@string/play"
             android:src="@drawable/ic_play"
             android:visibility="gone" />
 
@@ -128,6 +129,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start|center_vertical"
+            android:contentDescription="@string/pause"
             android:src="@drawable/ic_pause" />
 
         <ImageView
@@ -136,6 +138,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="end|center_vertical"
             android:layout_marginStart="12dp"
+            android:contentDescription="@string/stop"
             android:src="@drawable/ic_stop" />
     </LinearLayout>
 

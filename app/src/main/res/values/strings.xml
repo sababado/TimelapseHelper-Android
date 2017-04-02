@@ -7,4 +7,16 @@
     <string name="start_time">Start Time: %s</string>
     <string name="adding_time_lapse_message">A new time-lapse setting has been added.</string>
     <string name="camera_num">Camera %d</string>
+    <string name="play">Start</string>
+    <string name="pause">Pause</string>
+    <string name="stop">Stop</string>
+
+    <string name="desc_half_second">Driving time-lapse, creepy crawlies, surfer on a wave, any sports</string>
+    <string name="desc_1">analogue clock face, baking cookies</string>
+    <string name="desc_2">fast moving clouds, crowds of people, rush hour traffic, people walking along the street</string>
+    <string name="desc_5">clouds moving normally, sunrise or sunset</string>
+    <string name="desc_10">slow moving clouds, sunrise, sunset, waves on the beach</string>
+    <string name="desc_30">path of the sun on a clear day, moving shadows, night landscapes, stars and the moon</string>
+    <string name="desc_60">moving plants and trees, construction site over a day</string>
+
 </resources>
