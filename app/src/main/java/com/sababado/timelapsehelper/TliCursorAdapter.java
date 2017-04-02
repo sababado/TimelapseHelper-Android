@@ -2,6 +2,7 @@ package com.sababado.timelapsehelper;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,6 +42,7 @@ public class TliCursorAdapter extends CursorAdapter {
         View view = inflater.inflate(R.layout.time_lapse_list_item, parent, false);
         ViewHolder vh = new ViewHolder();
 
+        vh.name = (TextView) view.findViewById(R.id.name);
         vh.framesElapsed = (TextView) view.findViewById(R.id.frames_elapsed);
         vh.timeElapsed = (TextView) view.findViewById(R.id.time_elapsed);
         vh.secondsPerFrameLayout = (ViewGroup) view.findViewById(R.id.seconds_per_frame_layout);
@@ -58,6 +60,13 @@ public class TliCursorAdapter extends CursorAdapter {
     public void bindView(View view, final Context context, Cursor cursor) {
         final ViewHolder vh = (ViewHolder) view.getTag();
         final TimeLapseItem tli = new TimeLapseItem(cursor);
+
+        if (TextUtils.isEmpty(tli.getName())) {
+            int pos = cursor.getPosition() + 1;
+            vh.name.setText(context.getString(R.string.camera_num, pos));
+        } else {
+            vh.name.setText(tli.getName());
+        }
 
         int framesElapsed = TimeLapseController.getFramesElapsed(tli);
         vh.framesElapsed.setText(String.valueOf(framesElapsed));
@@ -122,6 +131,7 @@ public class TliCursorAdapter extends CursorAdapter {
     }
 
     private class ViewHolder {
+        TextView name;
         TextView framesElapsed;
         TextView timeElapsed;
         ViewGroup secondsPerFrameLayout;

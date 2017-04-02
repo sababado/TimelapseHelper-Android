@@ -57,6 +57,10 @@ public class TimeLapseItem implements Parcelable {
     @Column(6)
     private long stopTime;
 
+    // Name of the time-lapse
+    @Column(7)
+    private String name;
+
     public TimeLapseItem() {
         startTime = 0L;
         secondsPerFrame = 5f;
@@ -64,6 +68,7 @@ public class TimeLapseItem implements Parcelable {
         pauseTime = 0L;
         pauseLength = 0L;
         stopTime = 0L;
+        name = null;
     }
 
     public TimeLapseItem(Parcel in) {
@@ -75,6 +80,7 @@ public class TimeLapseItem implements Parcelable {
         pauseTime = in.readLong();
         pauseLength = in.readLong();
         stopTime = in.readLong();
+        name = in.readString();
     }
 
     public TimeLapseItem(Cursor c) {
@@ -86,6 +92,7 @@ public class TimeLapseItem implements Parcelable {
         pauseTime = c.getLong(4);
         pauseLength = c.getLong(5);
         stopTime = c.getLong(6);
+        name = c.getString(7);
     }
 
     public long getId() {
@@ -154,6 +161,14 @@ public class TimeLapseItem implements Parcelable {
         this.stopTime = stopTime;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public static final Creator<TimeLapseItem> CREATOR = new Creator<TimeLapseItem>() {
         @Override
         public TimeLapseItem createFromParcel(Parcel parcel) {
@@ -180,6 +195,7 @@ public class TimeLapseItem implements Parcelable {
         parcel.writeLong(pauseTime);
         parcel.writeLong(pauseLength);
         parcel.writeLong(stopTime);
+        parcel.writeString(name);
     }
 
     public ContentValues toContentValues() {
@@ -190,6 +206,7 @@ public class TimeLapseItem implements Parcelable {
         values.put("pauseTime", pauseTime);
         values.put("pauseLength", pauseLength);
         values.put("stopTime", stopTime);
+        values.put("name", name);
         return values;
     }
 
@@ -206,7 +223,8 @@ public class TimeLapseItem implements Parcelable {
         if (runState != that.runState) return false;
         if (pauseTime != that.pauseTime) return false;
         if (pauseLength != that.pauseLength) return false;
-        return stopTime == that.stopTime;
+        if (stopTime != that.stopTime) return false;
+        return name != null ? name.equals(that.name) : that.name == null;
 
     }
 
@@ -219,6 +237,7 @@ public class TimeLapseItem implements Parcelable {
         result = 31 * result + (int) (pauseTime ^ (pauseTime >>> 32));
         result = 31 * result + (int) (pauseLength ^ (pauseLength >>> 32));
         result = 31 * result + (int) (stopTime ^ (stopTime >>> 32));
+        result = 31 * result + (name != null ? name.hashCode() : 0);
         return result;
     }
 
@@ -232,6 +251,7 @@ public class TimeLapseItem implements Parcelable {
                 ", pauseTime=" + pauseTime +
                 ", pauseLength=" + pauseLength +
                 ", stopTime=" + stopTime +
+                ", name='" + name + '\'' +
                 '}';
     }
 }
