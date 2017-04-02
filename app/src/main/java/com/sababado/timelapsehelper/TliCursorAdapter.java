@@ -9,13 +9,16 @@ import android.widget.CursorAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ViewSwitcher;
 
 import com.sababado.timelapsehelper.models.TimeLapseController;
 import com.sababado.timelapsehelper.models.TimeLapseItem;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import static com.sababado.timelapsehelper.models.TimeLapseItem.PAUSED;
+import static com.sababado.timelapsehelper.models.TimeLapseItem.RUNNING;
+import static com.sababado.timelapsehelper.models.TimeLapseItem.STOPPED;
 
 /**
  * Created by robert on 3/31/17.
@@ -43,7 +46,8 @@ public class TliCursorAdapter extends CursorAdapter {
         vh.secondsPerFrameLayout = (ViewGroup) view.findViewById(R.id.seconds_per_frame_layout);
         vh.secondsPerFrame = (TextView) vh.secondsPerFrameLayout.findViewById(R.id.seconds_per_frame);
         vh.startTime = (TextView) view.findViewById(R.id.start_time);
-        vh.playPauseSwitcher = (ViewSwitcher) view.findViewById(R.id.play_pause_switcher);
+        vh.play = (ImageView) view.findViewById(R.id.play);
+        vh.pause = (ImageView) view.findViewById(R.id.pause);
         vh.stop = (ImageView) view.findViewById(R.id.stop);
 
         view.setTag(vh);
@@ -70,6 +74,24 @@ public class TliCursorAdapter extends CursorAdapter {
             vh.startTime.setText(context.getString(R.string.start_time, "--"));
         }
 
+        switch (tli.getRunState()) {
+            case RUNNING:
+                vh.stop.setVisibility(View.VISIBLE);
+                vh.pause.setVisibility(View.VISIBLE);
+                vh.play.setVisibility(View.GONE);
+                break;
+            case PAUSED:
+                vh.stop.setVisibility(View.VISIBLE);
+                vh.pause.setVisibility(View.GONE);
+                vh.play.setVisibility(View.VISIBLE);
+                break;
+            case STOPPED:
+                vh.stop.setVisibility(View.GONE);
+                vh.pause.setVisibility(View.GONE);
+                vh.play.setVisibility(View.VISIBLE);
+                break;
+        }
+
         vh.secondsPerFrameLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -77,24 +99,17 @@ public class TliCursorAdapter extends CursorAdapter {
             }
         });
 
-        vh.playPauseSwitcher.setOnClickListener(new View.OnClickListener() {
+        vh.play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int currentId = vh.playPauseSwitcher.getCurrentView().getId();
-                if (currentId == R.id.play) {
-                    // Just tapped the play button
-                    // Show the pause button, show the stop button
-                    actionListener.timeLapsePlay(tli);
-                    vh.stop.setVisibility(View.VISIBLE);
-                    vh.playPauseSwitcher.showNext();
-                } else if (currentId == R.id.pause) {
-                    // just tapped the pause button
-                    // Show the play button, hide the stop button
-                    actionListener.timeLapsePause(tli);
-                    vh.stop.setVisibility(View.GONE);
-                    vh.playPauseSwitcher.showPrevious();
-                }
+                actionListener.timeLapsePlay(tli);
+            }
+        });
 
+        vh.pause.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                actionListener.timeLapsePause(tli);
             }
         });
 
@@ -102,8 +117,6 @@ public class TliCursorAdapter extends CursorAdapter {
             @Override
             public void onClick(View view) {
                 actionListener.timeLapseStop(tli);
-                vh.stop.setVisibility(View.GONE);
-                vh.playPauseSwitcher.showPrevious();
             }
         });
     }
@@ -114,7 +127,8 @@ public class TliCursorAdapter extends CursorAdapter {
         ViewGroup secondsPerFrameLayout;
         TextView secondsPerFrame;
         TextView startTime;
-        ViewSwitcher playPauseSwitcher;
+        ImageView play;
+        ImageView pause;
         ImageView stop;
     }
 }
