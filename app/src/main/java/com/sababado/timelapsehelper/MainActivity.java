@@ -3,6 +3,7 @@ package com.sababado.timelapsehelper;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.LoaderManager;
@@ -21,7 +22,9 @@ public class MainActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor>,
         TliActionListener {
 
+    private ListView listView;
     private TliCursorAdapter adapter;
+    private Handler refreshHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,12 +43,26 @@ public class MainActivity extends AppCompatActivity implements
             }
         });
 
-        ListView listView = (ListView) findViewById(R.id.list_view);
+        refreshHandler = new Handler();
+
+        listView = (ListView) findViewById(R.id.list_view);
         adapter = new TliCursorAdapter(this, null, this);
         getSupportLoaderManager().initLoader(0, null, this);
         listView.setAdapter(adapter);
     }
 
+    private void refreshList() {
+        refreshHandler.postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                if (adapter != null && adapter.getCount() > 0) {
+                    adapter.notifyDataSetChanged();
+                    refreshHandler.postDelayed(this, 250);
+                }
+            }
+        }, 250);
+    }
 
     private void addTli() {
         ContentValues values = new TimeLapseItem().toContentValues();
@@ -89,6 +106,12 @@ public class MainActivity extends AppCompatActivity implements
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         if (adapter != null) {
             adapter.swapCursor(data);
+            listView.post(new Runnable() {
+                @Override
+                public void run() {
+                    refreshList();
+                }
+            });
         }
     }
 
