@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -15,42 +16,41 @@
         android:padding="@dimen/half_margin"
         android:textAppearance="?android:textAppearanceMedium" />
 
-    <LinearLayout
-        android:id="@+id/frames_elapsed_layout"
+
+    <TextView
+        android:id="@+id/frames_elapsed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/seconds_per_frame_layout"
         android:layout_alignEnd="@+id/time_elapsed"
         android:layout_alignParentStart="true"
+        android:layout_alignTop="@+id/seconds_per_frame_layout"
         android:layout_below="@id/name"
         android:gravity="center"
-        android:orientation="vertical">
+        android:minWidth="70sp"
+        android:textAppearance="?android:textAppearanceLarge"
+        tools:text="748" />
 
-        <TextView
-            android:id="@+id/frames_elapsed"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:minWidth="70sp"
-            android:textAppearance="?android:textAppearanceLarge"
-            tools:text="748" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/frames_elapsed"
+        android:layout_marginTop="-10dp"
+        android:layout_alignEnd="@id/frames_elapsed"
+        android:layout_alignStart="@id/frames_elapsed"
+        android:gravity="center"
+        android:minWidth="70sp"
+        android:text="@string/frames"
+        android:textAppearance="?android:textAppearanceSmall"
+        android:textSize="@dimen/text_size_tiny" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:minWidth="70sp"
-            android:text="@string/frames"
-            android:textAppearance="?android:textAppearanceSmall" />
-
-    </LinearLayout>
 
     <TextView
         android:id="@+id/time_elapsed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:layout_below="@id/frames_elapsed_layout"
+        android:layout_below="@id/frames_elapsed"
         android:layout_marginTop="@dimen/margin"
         android:gravity="center"
         android:textAppearance="?android:textAppearanceMedium"
@@ -85,14 +85,16 @@
                 android:layout_gravity="center_horizontal"
                 android:gravity="center"
                 android:text="@string/seconds_abbreviated"
-                android:textAppearance="?android:textAppearanceSmall" />
+                android:textAppearance="?android:textAppearanceSmall"
+                android:textSize="@dimen/text_size_tiny" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="@string/frame"
-                android:textAppearance="?android:textAppearanceSmall" />
+                android:textAppearance="?android:textAppearanceSmall"
+                android:textSize="@dimen/text_size_tiny" />
         </LinearLayout>
     </LinearLayout>
 
