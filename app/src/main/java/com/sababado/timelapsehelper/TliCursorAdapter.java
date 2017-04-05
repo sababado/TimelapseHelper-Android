@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.sababado.timelapsehelper.models.TimeLapseController;
 import com.sababado.timelapsehelper.models.TimeLapseItem;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -120,14 +121,8 @@ public class TliCursorAdapter extends CursorAdapter {
             public void afterTextChanged(Editable editable) {
                 String str = editable.toString();
                 if (!TextUtils.isEmpty(str)) {
-                    int decimalIndex = str.indexOf(".");
-                    String decimal = str.substring(decimalIndex + 1);
-                    float decimalNumber = Float.parseFloat(decimal);
-                    String newString = String.valueOf(str);
-                    if (decimalNumber == 0) {
-                        newString = str.substring(0, decimalIndex);
-                    }
-
+                    float num = Float.parseFloat(str);
+                    String newString = DecimalFormat.getNumberInstance().format(num);
                     if (!str.equals(newString)) {
                         editable.clear();
                         editable.append(newString);

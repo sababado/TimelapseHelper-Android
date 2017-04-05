@@ -29,9 +29,13 @@ import com.sababado.ezprovider.Contracts;
 import com.sababado.timelapsehelper.models.TimeLapseController;
 import com.sababado.timelapsehelper.models.TimeLapseItem;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+
 public class MainActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor>,
         TliActionListener {
+
 
     private ListView listView;
     private TliCursorAdapter adapter;
@@ -68,6 +72,7 @@ public class MainActivity extends AppCompatActivity implements
         adapter = new TliCursorAdapter(this, null, this);
         getSupportLoaderManager().initLoader(0, null, this);
         listView.setAdapter(adapter);
+        listView.setOnItemClickListener(onItemClickListener);
     }
 
     private void refreshList() {
@@ -104,6 +109,33 @@ public class MainActivity extends AppCompatActivity implements
     private void deleteTli(TimeLapseItem tli) {
         Contracts.Contract contract = Contracts.getContract(TimeLapseItem.class);
         getContentResolver().delete(contract.CONTENT_URI, "_id=?", new String[]{String.valueOf(tli.getId())});
+    }
+
+    private AdapterView.OnItemClickListener onItemClickListener = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            Cursor cursor = adapter.getCursor();
+            int savedPos = cursor.getPosition();
+            cursor.moveToPosition(i);
+            TimeLapseItem tli = new TimeLapseItem(cursor);
+            cursor.moveToPosition(savedPos);
+
+            showStats(tli);
+        }
+    };
+
+    private void showStats(TimeLapseItem tli) {
+        float framerate = 30.0f;
+        int elapsedFrames = TimeLapseController.getFramesElapsed(tli);
+        float seconds = elapsedFrames / framerate;
+        DecimalFormat decimalFormat = (DecimalFormat) NumberFormat.getNumberInstance();
+        String framerateStr = decimalFormat.format(framerate);
+        String secondsStr = decimalFormat.format(seconds);
+        String msg = getString(R.string.timelapse_will_render, secondsStr, framerateStr, elapsedFrames);
+        new AlertDialog.Builder(MainActivity.this)
+                .setMessage(msg)
+                .setTitle(tli.getName())
+                .show();
     }
 
     @Override
@@ -208,6 +240,9 @@ public class MainActivity extends AppCompatActivity implements
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
+                    case R.id.action_stats:
+                        showStats(tli);
+                        return true;
                     case R.id.action_delete:
                         deleteTli(tli);
                         return true;

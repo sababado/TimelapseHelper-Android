@@ -15,6 +15,8 @@
     <string name="custom_spf">Custom Seconds per Frame</string>
     <string name="choose_a_preset">Or choose a preset rate below</string>
     <string name="cannot_change_spf_while_running">Frame-rate cannot be changed on an active time-lapse.</string>
+    <string name="timelapse_will_render">%3$d frames will render %1$s seconds of video at %2$s fps</string>
+    <string name="statistics">Statistics</string>
 
     <string name="desc_half_second">0.5 - Driving time-lapse, creepy crawlies, surfer on a wave, any sports</string>
     <string name="desc_1">1 - Analogue clock face, baking cookies</string>
