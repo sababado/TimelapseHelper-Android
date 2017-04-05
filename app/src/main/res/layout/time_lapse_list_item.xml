@@ -118,7 +118,6 @@
         android:layout_alignBottom="@+id/frames_text"
         android:layout_alignParentEnd="true"
         android:layout_below="@+id/seconds_per_frame_layout"
-        android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <ImageView
@@ -126,6 +125,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
             android:contentDescription="@string/stop"
             android:src="@drawable/ic_stop" />
 
@@ -134,6 +134,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
+            android:layout_centerVertical="true"
             android:contentDescription="@string/play"
             android:src="@drawable/ic_play"
             android:visibility="gone" />
@@ -143,6 +144,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
+            android:layout_centerVertical="true"
             android:contentDescription="@string/pause"
             android:src="@drawable/ic_pause" />
 
@@ -151,6 +153,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
             android:contentDescription="@string/more"
             android:src="@drawable/ic_menu" />
     </RelativeLayout>
