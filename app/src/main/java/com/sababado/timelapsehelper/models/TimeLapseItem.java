@@ -62,13 +62,9 @@ public class TimeLapseItem implements Parcelable {
     private String name;
 
     public TimeLapseItem() {
-        startTime = 0L;
         secondsPerFrame = 5f;
-        runState = STOPPED;
-        pauseTime = 0L;
-        pauseLength = 0L;
-        stopTime = 0L;
         name = null;
+        reset();
     }
 
     public TimeLapseItem(Parcel in) {
@@ -93,6 +89,14 @@ public class TimeLapseItem implements Parcelable {
         pauseLength = c.getLong(5);
         stopTime = c.getLong(6);
         name = c.getString(7);
+    }
+
+    public void reset() {
+        startTime = 0L;
+        runState = STOPPED;
+        pauseTime = 0L;
+        pauseLength = 0L;
+        stopTime = 0L;
     }
 
     public long getId() {

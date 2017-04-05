@@ -18,8 +18,11 @@ import android.text.InputType;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sababado.ezprovider.Contracts;
@@ -124,26 +127,54 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onSpfClick(final TimeLapseItem tli) {
         if (tli.getRunState() == TimeLapseItem.STOPPED) {
-            final EditText editText = new EditText(this);
+
+            ViewGroup viewGroup = (ViewGroup) getLayoutInflater().inflate(R.layout.spf_selection, null, false);
+            final AlertDialog alertDialog = new AlertDialog.Builder(this)
+                    .setView(viewGroup)
+                    .setNegativeButton(android.R.string.cancel, null)
+                    .create();
+
+            ListView spfList = (ListView) viewGroup.findViewById(R.id.list_view);
+            spfList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    alertDialog.dismiss();
+                    String text = ((TextView) view).getText().toString();
+                    String number = text.substring(0, text.indexOf("-") - 1).trim();
+                    float spf = Float.parseFloat(number);
+                    updateSpf(tli, spf);
+                }
+            });
+            final EditText editText = (EditText) viewGroup.findViewById(R.id.editText);
+
             editText.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
             editText.setHint(String.valueOf(tli.getSecondsPerFrame()));
-            new AlertDialog.Builder(this)
-                    .setView(editText)
-                    .setNegativeButton(android.R.string.cancel, null)
-                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            float spf = Float.parseFloat(editText.getText().toString().trim());
-                            tli.setSecondsPerFrame(spf);
-                            updateTli(tli);
-                            refreshList();
-                        }
-                    })
-                    .create()
-                    .show();
+
+            alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(android.R.string.ok), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    String text = editText.getText().toString().trim();
+                    if (TextUtils.isEmpty(text)) {
+                        text = editText.getHint().toString();
+                    }
+                    float spf = Float.parseFloat(text);
+                    updateSpf(tli, spf);
+                }
+            });
+            alertDialog.show();
         } else {
             Toast.makeText(this, R.string.cannot_change_spf_while_running, Toast.LENGTH_LONG).show();
         }
+    }
+
+    private void updateSpf(TimeLapseItem tli, float spf) {
+        float old = tli.getSecondsPerFrame();
+        tli.setSecondsPerFrame(spf);
+        if (old != spf) {
+            tli.reset();
+        }
+        updateTli(tli);
+        refreshList();
     }
 
     @Override

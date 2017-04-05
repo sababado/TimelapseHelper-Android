@@ -69,6 +69,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="?android:editTextBackground"
+            android:gravity="center_horizontal"
             android:minWidth="40sp"
             android:textAppearance="?android:textAppearanceLarge"
             tools:text="5" />

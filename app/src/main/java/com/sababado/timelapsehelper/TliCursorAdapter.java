@@ -2,7 +2,9 @@ package com.sababado.timelapsehelper;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -104,6 +106,35 @@ public class TliCursorAdapter extends CursorAdapter {
 
         vh.secondsPerFrame.setText(String.valueOf(tli.getSecondsPerFrame()));
         vh.secondsPerFrame.setOnClickListener(onClickListener);
+        vh.secondsPerFrame.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String str = editable.toString();
+                if (!TextUtils.isEmpty(str)) {
+                    int decimalIndex = str.indexOf(".");
+                    String decimal = str.substring(decimalIndex + 1);
+                    float decimalNumber = Float.parseFloat(decimal);
+                    String newString = String.valueOf(str);
+                    if (decimalNumber == 0) {
+                        newString = str.substring(0, decimalIndex);
+                    }
+
+                    if (!str.equals(newString)) {
+                        editable.clear();
+                        editable.append(newString);
+                    }
+                }
+            }
+        });
 
         if (tli.getStartTime() != 0L) {
             Date time = new Date(tli.getStartTime());
