@@ -33,10 +33,12 @@ public class MainActivity extends AppCompatActivity implements
     private Handler refreshHandler;
     private boolean isRefreshing;
     private boolean shouldStopRefreshing;
+    private boolean reloadFromAdd;
 
     public MainActivity() {
         isRefreshing = false;
         shouldStopRefreshing = false;
+        reloadFromAdd = false;
     }
 
     @Override
@@ -50,9 +52,8 @@ public class MainActivity extends AppCompatActivity implements
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                reloadFromAdd = true;
                 addTli();
-                Snackbar.make(view, R.string.adding_time_lapse_message, Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
             }
         });
 
@@ -175,6 +176,11 @@ public class MainActivity extends AppCompatActivity implements
             listView.post(new Runnable() {
                 @Override
                 public void run() {
+                    if (reloadFromAdd) {
+                        reloadFromAdd = false;
+                        Snackbar.make(listView, R.string.adding_time_lapse_message, Snackbar.LENGTH_LONG)
+                                .setAction("Action", null).show();
+                    }
                     refreshList();
                 }
             });
