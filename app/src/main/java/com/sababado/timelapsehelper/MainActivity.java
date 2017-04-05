@@ -42,12 +42,10 @@ public class MainActivity extends AppCompatActivity implements
     private Handler refreshHandler;
     private boolean isRefreshing;
     private boolean shouldStopRefreshing;
-    private boolean reloadFromAdd;
 
     public MainActivity() {
         isRefreshing = false;
         shouldStopRefreshing = false;
-        reloadFromAdd = false;
     }
 
     @Override
@@ -61,7 +59,6 @@ public class MainActivity extends AppCompatActivity implements
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                reloadFromAdd = true;
                 addTli();
             }
         });
@@ -97,6 +94,8 @@ public class MainActivity extends AppCompatActivity implements
         ContentValues values = new TimeLapseItem().toContentValues();
         Contracts.Contract contract = Contracts.getContract(TimeLapseItem.class);
         getContentResolver().insert(contract.CONTENT_URI, values);
+        Snackbar.make(listView, R.string.adding_time_lapse_message, Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show();
     }
 
     private void updateTli(TimeLapseItem tli) {
@@ -109,6 +108,8 @@ public class MainActivity extends AppCompatActivity implements
     private void deleteTli(TimeLapseItem tli) {
         Contracts.Contract contract = Contracts.getContract(TimeLapseItem.class);
         getContentResolver().delete(contract.CONTENT_URI, "_id=?", new String[]{String.valueOf(tli.getId())});
+        Snackbar.make(listView, R.string.deleted_time_lapse, Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show();
     }
 
     private AdapterView.OnItemClickListener onItemClickListener = new AdapterView.OnItemClickListener() {
@@ -244,7 +245,17 @@ public class MainActivity extends AppCompatActivity implements
                         showStats(tli);
                         return true;
                     case R.id.action_delete:
-                        deleteTli(tli);
+                        new AlertDialog.Builder(MainActivity.this)
+                                .setTitle(R.string.are_you_sure)
+                                .setMessage(R.string.deleting_cannot_be_undone)
+                                .setNegativeButton(android.R.string.cancel, null)
+                                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        deleteTli(tli);
+                                    }
+                                })
+                                .show();
                         return true;
                 }
                 return false;
@@ -267,11 +278,6 @@ public class MainActivity extends AppCompatActivity implements
             listView.post(new Runnable() {
                 @Override
                 public void run() {
-                    if (reloadFromAdd) {
-                        reloadFromAdd = false;
-                        Snackbar.make(listView, R.string.adding_time_lapse_message, Snackbar.LENGTH_LONG)
-                                .setAction("Action", null).show();
-                    }
                     refreshList();
                 }
             });

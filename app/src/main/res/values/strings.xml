@@ -6,6 +6,7 @@
     <string name="frames">frames</string>
     <string name="start_time">Start Time: %s</string>
     <string name="adding_time_lapse_message">A new time-lapse setting has been added.</string>
+    <string name="deleted_time_lapse">Time-lapse setting deleted.</string>
     <string name="camera_num">Camera %d</string>
     <string name="play">Start</string>
     <string name="pause">Pause</string>
@@ -17,6 +18,8 @@
     <string name="cannot_change_spf_while_running">Frame-rate cannot be changed on an active time-lapse.</string>
     <string name="timelapse_will_render">%3$d frames will render %1$s seconds of video at %2$s fps</string>
     <string name="statistics">Statistics</string>
+    <string name="are_you_sure">Are you sure?</string>
+    <string name="deleting_cannot_be_undone">Deleting this item cannot be undone.</string>
 
     <string name="desc_half_second">0.5 - Driving time-lapse, creepy crawlies, surfer on a wave, any sports</string>
     <string name="desc_1">1 - Analogue clock face, baking cookies</string>
