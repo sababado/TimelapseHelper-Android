@@ -14,7 +14,7 @@
         android:gravity="center"
         android:hint="@string/camera_num"
         android:padding="@dimen/half_margin"
-        android:textAppearance="?android:textAppearanceMedium" />
+        android:textAppearance="?android:textAppearanceLarge" />
 
 
     <TextView
