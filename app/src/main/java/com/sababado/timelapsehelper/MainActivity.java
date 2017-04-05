@@ -31,6 +31,8 @@ import com.sababado.timelapsehelper.models.TimeLapseItem;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.Calendar;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor>,
@@ -126,13 +128,27 @@ public class MainActivity extends AppCompatActivity implements
     };
 
     private void showStats(TimeLapseItem tli) {
-        float framerate = 30.0f;
+        float renderFrameRate = 30.0f;
         int elapsedFrames = TimeLapseController.getFramesElapsed(tli);
-        float seconds = elapsedFrames / framerate;
+        float seconds = elapsedFrames / renderFrameRate;
         DecimalFormat decimalFormat = (DecimalFormat) NumberFormat.getNumberInstance();
-        String framerateStr = decimalFormat.format(framerate);
+
+        String framerateStr = decimalFormat.format(renderFrameRate);
         String secondsStr = decimalFormat.format(seconds);
         String msg = getString(R.string.timelapse_will_render, secondsStr, framerateStr, elapsedFrames);
+
+        int goalInSeconds = 30;
+        int frameCount = goalInSeconds * 30; //  goal in seconds * 30 frames per second
+        if (elapsedFrames < frameCount) {
+            int framesRemaining = frameCount - elapsedFrames;
+            int timeRemainingSeconds = (int) (framesRemaining * tli.getSecondsPerFrame() + 0.5f);
+            Calendar now = Calendar.getInstance(Locale.getDefault());
+            now.add(Calendar.SECOND, timeRemainingSeconds);
+            String eta = TimeLapseItem.START_TIME_FORMAT.format(now.getTime());
+            String etaMsg = getString(R.string.render_eta, eta, (timeRemainingSeconds / 60), goalInSeconds);
+            msg += "\n\n" + etaMsg;
+        }
+
         new AlertDialog.Builder(MainActivity.this)
                 .setMessage(msg)
                 .setTitle(tli.getName())

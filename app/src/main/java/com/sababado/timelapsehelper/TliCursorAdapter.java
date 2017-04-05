@@ -29,8 +29,6 @@ import static com.sababado.timelapsehelper.models.TimeLapseItem.STOPPED;
  */
 
 public class TliCursorAdapter extends CursorAdapter {
-    private static final SimpleDateFormat START_TIME_FORMAT = new SimpleDateFormat("HH:mm:ss");
-
     private LayoutInflater inflater;
     private TliActionListener actionListener;
 
@@ -133,7 +131,7 @@ public class TliCursorAdapter extends CursorAdapter {
 
         if (tli.getStartTime() != 0L) {
             Date time = new Date(tli.getStartTime());
-            vh.startTime.setText(context.getString(R.string.start_time, START_TIME_FORMAT.format(time)));
+            vh.startTime.setText(context.getString(R.string.start_time, TimeLapseItem.START_TIME_FORMAT.format(time)));
         } else {
             vh.startTime.setText(context.getString(R.string.start_time, "--"));
         }

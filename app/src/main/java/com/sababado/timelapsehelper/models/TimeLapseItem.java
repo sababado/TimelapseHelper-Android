@@ -12,6 +12,7 @@ import com.sababado.ezprovider.Table;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.text.SimpleDateFormat;
 
 /**
  * Created by robert on 3/30/17.
@@ -19,6 +20,7 @@ import java.lang.annotation.RetentionPolicy;
  */
 @Table(name = "TimeLapseItem", code = 1)
 public class TimeLapseItem implements Parcelable {
+    public static final SimpleDateFormat START_TIME_FORMAT = new SimpleDateFormat("HH:mm:ss");
 
     public static final int RUNNING = 1;
     public static final int PAUSED = 2;

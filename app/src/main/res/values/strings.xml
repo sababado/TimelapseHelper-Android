@@ -17,6 +17,7 @@
     <string name="choose_a_preset">Or choose a preset rate below</string>
     <string name="cannot_change_spf_while_running">Frame-rate cannot be changed on an active time-lapse.</string>
     <string name="timelapse_will_render">%3$d frames will render %1$s seconds of video at %2$s fps</string>
+    <string name="render_eta">ETA of %1$s (~%2$d minutes) for %3$d seconds of rendered video.</string>
     <string name="statistics">Statistics</string>
     <string name="are_you_sure">Are you sure?</string>
     <string name="deleting_cannot_be_undone">Deleting this item cannot be undone.</string>
