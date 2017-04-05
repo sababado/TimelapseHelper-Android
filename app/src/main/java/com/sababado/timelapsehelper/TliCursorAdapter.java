@@ -61,12 +61,36 @@ public class TliCursorAdapter extends CursorAdapter {
         final ViewHolder vh = (ViewHolder) view.getTag();
         final TimeLapseItem tli = new TimeLapseItem(cursor);
 
+        View.OnClickListener onClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int id = view.getId();
+                switch (id) {
+                    case R.id.name:
+                        actionListener.onNameClick(tli);
+                        break;
+                    case R.id.seconds_per_frame:
+                        actionListener.onSpfClick(tli);
+                        break;
+                    case R.id.play:
+                        actionListener.timeLapsePlay(tli);
+                        break;
+                    case R.id.pause:
+                        actionListener.timeLapsePause(tli);
+                        break;
+                    case R.id.stop:
+                        actionListener.timeLapseStop(tli);
+                        break;
+                }
+            }
+        };
+
         if (TextUtils.isEmpty(tli.getName())) {
             int pos = cursor.getPosition() + 1;
-            vh.name.setText(context.getString(R.string.camera_num, pos));
-        } else {
-            vh.name.setText(tli.getName());
+            tli.setName(context.getString(R.string.camera_num, pos));
         }
+        vh.name.setText(tli.getName());
+        vh.name.setOnClickListener(onClickListener);
 
         int framesElapsed = TimeLapseController.getFramesElapsed(tli);
         vh.framesElapsed.setText(String.valueOf(framesElapsed));
@@ -75,6 +99,7 @@ public class TliCursorAdapter extends CursorAdapter {
         vh.timeElapsed.setText(timeElapsed);
 
         vh.secondsPerFrame.setText(String.valueOf(tli.getSecondsPerFrame()));
+        vh.secondsPerFrame.setOnClickListener(onClickListener);
 
         if (tli.getStartTime() != 0L) {
             Date time = new Date(tli.getStartTime());
@@ -108,26 +133,9 @@ public class TliCursorAdapter extends CursorAdapter {
             }
         });
 
-        vh.play.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                actionListener.timeLapsePlay(tli);
-            }
-        });
-
-        vh.pause.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                actionListener.timeLapsePause(tli);
-            }
-        });
-
-        vh.stop.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                actionListener.timeLapseStop(tli);
-            }
-        });
+        vh.play.setOnClickListener(onClickListener);
+        vh.pause.setOnClickListener(onClickListener);
+        vh.stop.setOnClickListener(onClickListener);
     }
 
     private class ViewHolder {

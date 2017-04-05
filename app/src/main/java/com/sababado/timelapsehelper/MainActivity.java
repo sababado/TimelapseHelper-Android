@@ -1,6 +1,7 @@
 package com.sababado.timelapsehelper;
 
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
@@ -9,10 +10,15 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
+import android.text.TextUtils;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.sababado.ezprovider.Contracts;
 import com.sababado.timelapsehelper.models.TimeLapseController;
@@ -25,6 +31,13 @@ public class MainActivity extends AppCompatActivity implements
     private ListView listView;
     private TliCursorAdapter adapter;
     private Handler refreshHandler;
+    private boolean isRefreshing;
+    private boolean shouldStopRefreshing;
+
+    public MainActivity() {
+        isRefreshing = false;
+        shouldStopRefreshing = false;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,16 +65,21 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     private void refreshList() {
-        refreshHandler.postDelayed(new Runnable() {
+        if (!isRefreshing) {
+            refreshHandler.postDelayed(new Runnable() {
 
-            @Override
-            public void run() {
-                if (adapter != null && adapter.getCount() > 0) {
-                    adapter.notifyDataSetChanged();
-                    refreshHandler.postDelayed(this, 250);
+                @Override
+                public void run() {
+                    if (!shouldStopRefreshing && adapter != null && adapter.getCount() > 0) {
+                        isRefreshing = true;
+                        adapter.notifyDataSetChanged();
+                        refreshHandler.postDelayed(this, 250);
+                    } else {
+                        isRefreshing = false;
+                    }
                 }
-            }
-        }, 250);
+            }, 250);
+        }
     }
 
     private void addTli() {
@@ -96,6 +114,54 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
+    public void onSpfClick(final TimeLapseItem tli) {
+        if (tli.getRunState() == TimeLapseItem.STOPPED) {
+            final EditText editText = new EditText(this);
+            editText.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
+            editText.setHint(String.valueOf(tli.getSecondsPerFrame()));
+            new AlertDialog.Builder(this)
+                    .setView(editText)
+                    .setNegativeButton(android.R.string.cancel, null)
+                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            float spf = Float.parseFloat(editText.getText().toString().trim());
+                            tli.setSecondsPerFrame(spf);
+                            updateTli(tli);
+                            refreshList();
+                        }
+                    })
+                    .create()
+                    .show();
+        } else {
+            Toast.makeText(this, R.string.cannot_change_spf_while_running, Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    public void onNameClick(final TimeLapseItem tli) {
+        final EditText editText = new EditText(this);
+        editText.setHint(tli.getName());
+        new AlertDialog.Builder(this)
+                .setView(editText)
+                .setNegativeButton(android.R.string.cancel, null)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        String name = editText.getText().toString().trim();
+                        if (TextUtils.isEmpty(name)) {
+                            name = editText.getHint().toString();
+                        }
+                        tli.setName(name);
+                        updateTli(tli);
+                        refreshList();
+                    }
+                })
+                .create()
+                .show();
+    }
+
+    @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         Contracts.Contract contract = Contracts.getContract(TimeLapseItem.class);
         return new CursorLoader(this, contract.CONTENT_URI, contract.COLUMNS,
@@ -120,6 +186,18 @@ public class MainActivity extends AppCompatActivity implements
         if (adapter != null) {
             adapter.swapCursor(null);
         }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        shouldStopRefreshing = false;
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        shouldStopRefreshing = true;
     }
 
     @Override

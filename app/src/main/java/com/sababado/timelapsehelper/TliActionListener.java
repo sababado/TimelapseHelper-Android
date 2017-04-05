@@ -12,4 +12,8 @@ public interface TliActionListener {
     void timeLapsePause(TimeLapseItem tli);
 
     void timeLapseStop(TimeLapseItem tli);
+
+    void onSpfClick(TimeLapseItem tli);
+
+    void onNameClick(TimeLapseItem tli);
 }

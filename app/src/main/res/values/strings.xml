@@ -10,13 +10,26 @@
     <string name="play">Start</string>
     <string name="pause">Pause</string>
     <string name="stop">Stop</string>
+    <string name="custom_spf">Custom Seconds per Frame</string>
+    <string name="choose_a_preset">Or choose a preset rate below</string>
+    <string name="cannot_change_spf_while_running">Frame-rate cannot be changed on an active time-lapse.</string>
 
-    <string name="desc_half_second">Driving time-lapse, creepy crawlies, surfer on a wave, any sports</string>
-    <string name="desc_1">analogue clock face, baking cookies</string>
-    <string name="desc_2">fast moving clouds, crowds of people, rush hour traffic, people walking along the street</string>
-    <string name="desc_5">clouds moving normally, sunrise or sunset</string>
-    <string name="desc_10">slow moving clouds, sunrise, sunset, waves on the beach</string>
-    <string name="desc_30">path of the sun on a clear day, moving shadows, night landscapes, stars and the moon</string>
-    <string name="desc_60">moving plants and trees, construction site over a day</string>
+    <string name="desc_half_second">0.5 - Driving time-lapse, creepy crawlies, surfer on a wave, any sports</string>
+    <string name="desc_1">1 - Analogue clock face, baking cookies</string>
+    <string name="desc_2">2 - Fast moving clouds, crowds of people, rush hour traffic, people walking along the street</string>
+    <string name="desc_5">5 - Clouds moving normally, sunrise or sunset</string>
+    <string name="desc_10">10 - Slow moving clouds, sunrise, sunset, waves on the beach</string>
+    <string name="desc_30">30 - Path of the sun on a clear day, moving shadows, night landscapes, stars and the moon</string>
+    <string name="desc_60">60 - Moving plants and trees, construction site over a day</string>
+
+    <string-array name="preset_spf">
+        <item>@string/desc_half_second</item>
+        <item>@string/desc_1</item>
+        <item>@string/desc_2</item>
+        <item>@string/desc_5</item>
+        <item>@string/desc_10</item>
+        <item>@string/desc_30</item>
+        <item>@string/desc_60</item>
+    </string-array>
 
 </resources>

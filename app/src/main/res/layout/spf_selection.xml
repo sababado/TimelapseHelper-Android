@@ -8,12 +8,20 @@
         android:id="@+id/editText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="10"
         android:layout_gravity="center_horizontal"
-        android:layout_margin="@dimen/margin"
+        android:layout_margin="@dimen/half_margin"
+        android:ems="11"
+        android:hint="@string/custom_spf"
         android:inputType="numberSigned" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/choose_a_preset" />
 
     <ListView
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:entries="@array/preset_spf" />
 </LinearLayout>
