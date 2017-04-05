@@ -12,9 +12,11 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
 import android.text.TextUtils;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -96,6 +98,11 @@ public class MainActivity extends AppCompatActivity implements
                 "_id=?", new String[]{String.valueOf(tli.getId())});
     }
 
+    private void deleteTli(TimeLapseItem tli) {
+        Contracts.Contract contract = Contracts.getContract(TimeLapseItem.class);
+        getContentResolver().delete(contract.CONTENT_URI, "_id=?", new String[]{String.valueOf(tli.getId())});
+    }
+
     @Override
     public void timeLapsePlay(TimeLapseItem tli) {
         TimeLapseController.startTimeLapse(tli);
@@ -160,6 +167,24 @@ public class MainActivity extends AppCompatActivity implements
                 })
                 .create()
                 .show();
+    }
+
+    @Override
+    public void onMoreClicked(final TimeLapseItem tli, View moreButton) {
+        PopupMenu popupMenu = new PopupMenu(this, moreButton);
+        popupMenu.inflate(R.menu.tli_popup);
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.action_delete:
+                        deleteTli(tli);
+                        return true;
+                }
+                return false;
+            }
+        });
+        popupMenu.show();
     }
 
     @Override

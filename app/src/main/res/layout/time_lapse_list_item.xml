@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,7 +9,8 @@
         android:id="@+id/name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="@dimen/margin"
         android:gravity="center"
         android:hint="@string/camera_num"
         android:padding="@dimen/half_margin"
@@ -21,10 +21,8 @@
         android:id="@+id/frames_elapsed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/seconds_per_frame_layout"
         android:layout_alignEnd="@+id/time_elapsed"
         android:layout_alignParentStart="true"
-        android:layout_alignTop="@+id/seconds_per_frame_layout"
         android:layout_below="@id/name"
         android:gravity="center"
         android:minWidth="70sp"
@@ -32,12 +30,13 @@
         tools:text="748" />
 
     <TextView
+        android:id="@+id/frames_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/frames_elapsed"
-        android:layout_marginTop="-10dp"
         android:layout_alignEnd="@id/frames_elapsed"
         android:layout_alignStart="@id/frames_elapsed"
+        android:layout_below="@id/frames_elapsed"
+        android:layout_marginTop="-4dp"
         android:gravity="center"
         android:minWidth="70sp"
         android:text="@string/frames"
@@ -60,8 +59,9 @@
         android:id="@+id/seconds_per_frame_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/name"
+        android:layout_alignParentEnd="true"
         android:layout_centerHorizontal="true"
+        android:layout_marginEnd="@dimen/margin"
         android:orientation="horizontal">
 
         <TextView
@@ -109,19 +109,28 @@
         android:textAppearance="?android:textAppearanceMedium"
         tools:text="Start Time:1:23:33" />
 
-    <LinearLayout
-        android:layout_width="76dp"
+    <RelativeLayout
+        android:layout_width="114dp"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/seconds_per_frame_layout"
+        android:layout_alignBottom="@+id/frames_text"
         android:layout_alignParentEnd="true"
-        android:layout_below="@id/name"
+        android:layout_below="@+id/seconds_per_frame_layout"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/stop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:contentDescription="@string/stop"
+            android:src="@drawable/ic_stop" />
 
         <ImageView
             android:id="@+id/play"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="start|center_vertical"
+            android:layout_centerInParent="true"
             android:contentDescription="@string/play"
             android:src="@drawable/ic_play"
             android:visibility="gone" />
@@ -130,18 +139,17 @@
             android:id="@+id/pause"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="start|center_vertical"
+            android:layout_centerInParent="true"
             android:contentDescription="@string/pause"
             android:src="@drawable/ic_pause" />
 
         <ImageView
-            android:id="@+id/stop"
+            android:id="@+id/more"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="end|center_vertical"
-            android:layout_marginStart="12dp"
-            android:contentDescription="@string/stop"
-            android:src="@drawable/ic_stop" />
-    </LinearLayout>
+            android:layout_alignParentEnd="true"
+            android:contentDescription="@string/more"
+            android:src="@drawable/ic_menu" />
+    </RelativeLayout>
 
 </RelativeLayout>

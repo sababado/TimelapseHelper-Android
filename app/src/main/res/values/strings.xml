@@ -10,6 +10,8 @@
     <string name="play">Start</string>
     <string name="pause">Pause</string>
     <string name="stop">Stop</string>
+    <string name="more">More</string>
+    <string name="delete">Delete</string>
     <string name="custom_spf">Custom Seconds per Frame</string>
     <string name="choose_a_preset">Or choose a preset rate below</string>
     <string name="cannot_change_spf_while_running">Frame-rate cannot be changed on an active time-lapse.</string>

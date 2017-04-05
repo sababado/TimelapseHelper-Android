@@ -51,6 +51,7 @@ public class TliCursorAdapter extends CursorAdapter {
         vh.play = (ImageView) view.findViewById(R.id.play);
         vh.pause = (ImageView) view.findViewById(R.id.pause);
         vh.stop = (ImageView) view.findViewById(R.id.stop);
+        vh.menu = (ImageView) view.findViewById(R.id.more);
 
         view.setTag(vh);
         return view;
@@ -80,6 +81,9 @@ public class TliCursorAdapter extends CursorAdapter {
                         break;
                     case R.id.stop:
                         actionListener.timeLapseStop(tli);
+                        break;
+                    case R.id.more:
+                        actionListener.onMoreClicked(tli, vh.menu);
                         break;
                 }
             }
@@ -136,6 +140,7 @@ public class TliCursorAdapter extends CursorAdapter {
         vh.play.setOnClickListener(onClickListener);
         vh.pause.setOnClickListener(onClickListener);
         vh.stop.setOnClickListener(onClickListener);
+        vh.menu.setOnClickListener(onClickListener);
     }
 
     private class ViewHolder {
@@ -148,6 +153,7 @@ public class TliCursorAdapter extends CursorAdapter {
         ImageView play;
         ImageView pause;
         ImageView stop;
+        ImageView menu;
     }
 }
 

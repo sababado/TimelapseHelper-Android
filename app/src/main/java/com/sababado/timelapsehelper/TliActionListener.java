@@ -1,5 +1,7 @@
 package com.sababado.timelapsehelper;
 
+import android.view.View;
+
 import com.sababado.timelapsehelper.models.TimeLapseItem;
 
 /**
@@ -16,4 +18,6 @@ public interface TliActionListener {
     void onSpfClick(TimeLapseItem tli);
 
     void onNameClick(TimeLapseItem tli);
+
+    void onMoreClicked(TimeLapseItem tli, View moreButton);
 }
