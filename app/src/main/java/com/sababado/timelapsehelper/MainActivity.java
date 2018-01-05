@@ -135,8 +135,8 @@ public class MainActivity extends AppCompatActivity implements
 
         String framerateStr = decimalFormat.format(renderFrameRate);
         String secondsStr = decimalFormat.format(seconds);
-        String msg = getString(R.string.timelapse_will_render, secondsStr, framerateStr, elapsedFrames);
 
+        String msg = getString(R.string.timelapse_will_render, secondsStr, framerateStr, elapsedFrames);
         int goalInSeconds = 30;
         int frameCount = goalInSeconds * 30; //  goal in seconds * 30 frames per second
         if (elapsedFrames < frameCount) {
